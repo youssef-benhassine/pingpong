@@ -1,0 +1,242 @@
+/* fonctionne comme un panneau de configuration
+ * prend en compte les dependences dans les calculs
+ * on n'a pas a changer 999 fois la meme valeur
+ * si on change une valeur
+ * var calcules sont utilise dans d'autre calculs
+ * */
+:root {
+  /* game vars */
+  --game-width: 70vw;
+  --game-height: 100%;
+  --game-background-color: black;
+  --top-down-borders-width: 15px;
+
+  /* paddle vars */
+  --paddle-width: 20px;
+  --paddle-height: 90px;
+  --paddle-offset: 20px;
+
+  /* player colors vars */
+  --player-1-color: red;
+  --player-2-color: blue;
+  --font-size: 20px;
+
+  /* score vars */
+  --score-width: 200px;
+  --scoreleft-left: calc(var(--game-width) * 0.4 - var(--score-width) / 2);
+  --scoreright-left: calc(var(--game-width) * 0.6 - var(--score-width) / 2);
+
+  /* ball vars */
+  --ball-background-color: #d9d9d9;
+  --ball-radius: 10px;
+
+  /* divider vars */
+  --divider-width: 20px;
+  --divider-color: white;
+
+  /* winner box vars */
+  --winner-box-width: 500px;
+  --winner-box-height: 400px;
+
+  /* replay button vars */
+  --replay-button-width: 40%;
+  --replay-button-height: 15%;
+  --replay-button-top: calc(var(--winner-box-height) * 0.70);
+  --replay-button-left: calc(var(--winner-box-width) / 2 - var(--replay-button-width) / 2);
+  --replay-button-offset-top: 10px;
+  --replay-button-offset-left: 10px;
+}
+
+html {
+  font-size: var(--font-size);
+  /* disables scrolling */
+  overflow: hidden;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--game-background-color);
+  /* centrer le jeu dans l'ecran */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* fenetre du jeu */
+#gameArea {
+  width: var(--game-width);
+  height: var(--game-height);
+  margin: auto auto;
+  background-color: var(--game-background-color);
+  /* position aboslute fonctionne
+ * par rapport au premier element parent 
+ * qui n'est pas position: static
+ * (valeur par default)
+ * */
+  position: relative;
+  border-top: var(--top-down-borders-width) solid var(--divider-color);
+  border-bottom: var(--top-down-borders-width) solid var(--divider-color);
+}
+
+#divider {
+  height: 100%;
+  width: var(--divider-width);
+  /* only border left is in use */
+  border-left: var(--divider-width) dashed var(--divider-color);
+  position: absolute;
+  /* calculer distance entre divisieur et cote gauche */
+  left: calc(var(--game-width) / 2 - var(--divider-width) / 2);
+}
+
+.paddle {
+  width: var(--paddle-width);
+  height: var(--paddle-height);
+  position: absolute;
+  /* positionne les raquette au milieu de la fenetre */
+  top: calc(var(--game-height) / 2 - var(--paddle-height) / 2);
+}
+
+#left {
+  /* calculer distance entre raquette et cote gauche */
+  left: var(--paddle-offset);
+  background-color: var(--player-1-color);
+}
+
+#right {
+  /* calculer distance entre raquette et cote gauche */
+  left: calc(var(--game-width) - var(--paddle-width) - var(--paddle-offset));
+  background-color: var(--player-2-color);
+}
+
+#scoreleft,
+#scoreright {
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 10;
+  font-style: bold;
+  font-size: 10rem;
+  width: var(--score-width);
+  text-align: center;
+}
+
+#scoreleft {
+  color: var(--player-1-color);
+  position: absolute;
+  left: var(--scoreleft-left);
+}
+
+#scoreright {
+  color: var(--player-2-color);
+  position: absolute;
+  left: var(--scoreright-left);
+}
+
+#ball {
+  width: calc(var(--ball-radius) * 2);
+  height: calc(var(--ball-radius) * 2);
+  /* design initial balle, jeu original gros pixel */
+  /* border-radius: 50%; */
+  background-color: var(--ball-background-color);
+  position: absolute;
+  /* positon balle au milieu de la fentetre */
+  left: calc(var(--game-width) / 2 - var(--ball-radius));
+  z-index: 1;
+}
+
+#winnerBox {
+  /* winnerbox only displayed thorouthg javascrip
+   * when a player wins
+   */
+  display: none;
+  width: var(--winner-box-width);
+  height: var(--winner-box-height);
+  background-color: var(--game-background-color);
+  margin: auto auto;
+  position: absolute;
+  /* center winner bxo */
+  top: calc(var(--game-height) / 2 - var(--winner-box-height) / 2);
+  left: calc(var(--game-width) / 2 - var(--winner-box-width) / 2);
+  /* assure qu'il soit affiche devant tout les autres elements */
+  /* valeur par defautl auto 1 permet de placer l'element devant les autres*/
+  z-index: 1;
+}
+
+#winnerMsg {
+  text-align: center;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 4rem;
+}
+
+/* system bibliotheque implemente */
+/* la selection de la classe red ou bleu
+ * depend du joueur qui gagne
+ * l'attribution est fait a travers javascript
+ */
+.winnerMessageRed {
+  color: var(--player-1-color);
+  box-shadow: 10px 10px var(--player-1-color);
+  border: solid var(--player-1-color);
+}
+
+.winnerMessageBlue {
+  color: var(--player-2-color);
+  box-shadow: 10px 10px var(--player-2-color);
+  border: solid var(--player-2-color);
+}
+
+#replay {
+  width: var(--replay-button-width);
+  height: var(--replay-button-height);
+  background-color: var(--game-background-color);
+  margin: auto auto;
+  text-align: center;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 10;
+  font-size: 2rem;
+  position: absolute;
+  /* depend on parent elemtn "wiener box" */
+  top: var(--replay-button-top);
+  left: var(--replay-button-left);
+}
+
+/* applies on click */
+#replay:active {
+  background-color: white;
+  color: var(--game-background-color) !important;
+}
+
+/* system bibliotheque de nouvwuai */
+.replayRed {
+  border: solid var(--player-1-color);
+  box-shadow: 10px 10px var(--player-1-color);
+  color: var(--player-1-color) !important;
+}
+
+/* applies on hover */
+.replayRed:hover {
+  border: solid var(--player-1-color);
+  box-shadow: 0px 0px;
+  /* permet de decaler le bouton en ajoutant des pixels au prop
+   * top et left */
+  top: calc(var(--replay-button-top) + var(--replay-button-offset-top)) !important;
+  left: calc(var(--replay-button-left) + var(--replay-button-offset-left)) !important;
+}
+
+.replayBlue {
+  border: solid var(--player-2-color);
+  box-shadow: 10px 10px var(--player-2-color);
+  color: var(--player-2-color) !important;
+}
+
+.replayBlue:hover {
+  border: solid var(--player-2-color);
+  box-shadow: 0px 0px;
+  top: calc(var(--replay-button-top) + var(--replay-button-offset-top)) !important;
+  left: calc(var(--replay-button-left) + var(--replay-button-offset-left)) !important;
+}

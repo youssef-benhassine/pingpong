@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- JEU ORIGINAL https://freepong.org/ -->
+  <!-- VERSION Y    https://xorcist15.github.io/pingpong -->
+  <!-- GITHUB       https://github.com/xorcist15/pingpong -->
+
+  <!-- lien css -->
+  <link rel="stylesheet" href="src/styles.css">
+
+  <!-- lien google font, police pixelise -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+  <!-- lien fichier javascript, implementation de la logique du jeu -->
+  <script defer src="src/script.js"></script>
+
+  <title>PingPong Game</title>
+</head>
+
+<body>
+  <div id="gameArea">
+
+    <div id="left" class="paddle"></div>
+    <div id="ball"></div>
+    <div id="scoreleft"></div>
+    <div id="divider"></div>
+    <div id="scoreright"></div>
+    <div id="right" class="paddle"></div>
+    <div id="winnerBox">
+      <p id="winnerMsg"></p>
+      <button id="replay">Replay?</button>
+    </div>
+
+  </div>
+</body>
+
+</html>
